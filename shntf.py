@@ -2,12 +2,14 @@
 import numpy
 import scipy
 import matplotlib.pyplot as plt
+import pandas
+
 
 def main():
     n = 3
     ai = 3
     bi = 13
-    ci = 103
+    ci = 37
     uo = numpy.random.randint(0, 10, ai*n).reshape(ai, n)
     vo = numpy.random.randint(0, 10, bi*n).reshape(bi, n)
     wo = numpy.random.randint(0, 10, ci*n).reshape(ci, n)
@@ -65,32 +67,36 @@ def loglikelihoodGamma(m, r1, r2, r3):
 def aic(m, r1, r2, r3):
     return -2*loglikelihood(m, r1, r2, r3)+2*(r1.size+r2.size+r3.size)
 
-def ntf3(m, n, iter=32):
+def ntf3(m, n, iter=4):
     r1 = numpy.zeros((m.shape[0],n))
     r2 = numpy.zeros((m.shape[1],n))
     r3 = numpy.zeros((m.shape[2],n))
     r1 = numpy.random.rand(m.shape[0],n)
     r2 = numpy.random.rand(m.shape[1],n)
     r3 = numpy.random.rand(m.shape[2],n)
-    r1[:,0] = m.mean(axis=(1,2))
-    r2[:,0] = m.mean(axis=(0,2))
-    r3[:,0] = m.mean(axis=(0,1))
+    #r1[:,0] = m.mean(axis=(1,2))
+    #r2[:,0] = m.mean(axis=(0,2))
+    #r3[:,0] = m.mean(axis=(0,1))
     for i in range(iter):
         r123 = numpy.einsum('il,jl,kl->ijk', r1, r2, r3)
         lower = numpy.einsum('sk,tk,rst->rk',r2,r3,r123)
         upper = numpy.einsum('rst,sk,tk->rk',m,r2,r3)
         r1 = r1*(upper/lower)
-        print('ntf3:r1\n',r1)
+        #print('ntf3:r1\n',r1)
         r123 = numpy.einsum('il,jl,kl->ijk', r1, r2, r3)
         lower = numpy.einsum('rk,tk,rst->sk',r1,r3,r123)
         upper = numpy.einsum('rst,rk,tk->sk',m,r1,r3)
         r2 = r2*(upper/lower)
-        print('ntf3:r2\n',r2)
+        #print('ntf3:r2\n',r2)
         r123 = numpy.einsum('il,jl,kl->ijk', r1, r2, r3)
         lower = numpy.einsum('rk,sk,rst->tk',r1,r2,r123)
         upper = numpy.einsum('rst,rk,sk->tk',m,r1,r2)
         r3 = r3*(upper/lower)
-        print('ntf3:r3\n',r3)
+        #print('ntf3:r3\n',r3)
+        print(i)
+        print(pandas.DataFrame(r1).corr())
+        print(pandas.DataFrame(r2).corr())
+        print(pandas.DataFrame(r3).corr())
     return r1,r2,r3
 
 # u_{r,k}=u_{r, k}\displaystyle\frac{\sum_s\sum_tx_{r,s,t}v_{s,k}w_{t,k}}{\sum_s\sum_tv_{s,k}w_{t,k}\sum_{k^{'}}u_{r,k'}v_{s,k'}w_{t,k'}}
