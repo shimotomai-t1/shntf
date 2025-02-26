@@ -1,11 +1,46 @@
 
+import click
 import numpy
 import scipy
 import matplotlib.pyplot as plt
 import pandas
 
 
-def main():
+@click.group()
+def cl():
+    pass
+
+@cl.command()
+def eval2():
+    n = 3
+    ai = 3
+    bi = 41
+    ao = numpy.random.rand(ai, n)
+    bo = numpy.random.rand(bi, n)
+    print(ao)
+    print(bo)
+    x = numpy.einsum('ih,jh->ij', ao, bo)
+    df = pandas.DataFrame(index=numpy.arange(1,10), columns=['rank', 'error'])
+    for i in range(1,20):
+        ax, bx, info = ntf2(x, i, iter=5)
+        last = info.index[-1]
+        df.loc[i, ['rank','error', 'LL', 'AIC']] = [i, info.loc[last,'error'], info.loc[last,'likelihood'], info.loc[last,'aic']]
+    #df.index = df['rank']
+    print('result')
+    print(ax)
+    print(bx)
+    print(df)
+    #df.drop('rank')
+    df.plot()
+    #plt.figure()
+    #plt.plot(ax)
+    #plt.figure()
+    #plt.plot(bx)
+    plt.show()
+    return
+
+@cl.command()
+def eval3():
     n = 3
     ai = 3
     bi = 13
@@ -67,6 +102,38 @@ def loglikelihoodGamma(m, r1, r2, r3):
 def aic(m, r1, r2, r3):
     return -2*loglikelihood(m, r1, r2, r3)+2*(r1.size+r2.size+r3.size)
 
+def ntf2(x:numpy.ndarray, n:int, iter:int=4) -> tuple:
+    """
+    x: 目的行列
+    n: 分解数,rank
+    iter: 繰り返し回数
+    """
+    a = numpy.random.rand(x.shape[0], n)
+    b = numpy.random.rand(x.shape[1], n)
+    xhat = numpy.einsum('ih,jh->ij', a, b)
+    er = ((x - xhat)*(x - xhat)).sum()
+    dfer = pandas.DataFrame(index=numpy.arange(iter+1), columns=['error'])
+    parnum = x.shape[0]*n+ x.shape[1]*n
+    dfer.loc[0,'error'] = er
+    for i in range(1, iter+1):
+        xhat = numpy.einsum('ih,jh->ij', a, b)
+        lower = numpy.einsum('ij,jh->ih', xhat, b)
+        upper = numpy.einsum('ij,jh->ih', x,    b)
+        a = a * (upper/lower)
+        xhat = numpy.einsum('ih,jh->ij', a, b)
+        lower = numpy.einsum('ij,ih->jh', xhat, a)
+        upper = numpy.einsum('ij,ih->jh', x,    a)
+        b = b * (upper/lower)
+        xhat = numpy.einsum('ih,jh->ij', a, b)
+        er = ((x - xhat)*(x - xhat))
+        s = er.mean()
+        ll = - er.sum()/(2*s) - numpy.log(2*numpy.pi*s)
+        aic = -2*ll + 2*parnum*0.003
+        dfer.loc[i, ['error', 'variance', 'likelihood', 'aic']] = [er.sum(), s, ll, aic]
+    print(dfer)
+    return a, b, dfer
+
+
 def ntf3(m, n, iter=4):
     r1 = numpy.zeros((m.shape[0],n))
     r2 = numpy.zeros((m.shape[1],n))
@@ -107,4 +174,4 @@ def ntf3(m, n, iter=4):
 # w_{t,k}=w_{t, k}\displaystyle\frac{\sum_s\sum_tx_{r,s,t}v_{s,k}u_{r,k}}{\sum_s\sum_tv_{s,k}u_{r,k}\sum_{k^{'}}u_{r,k'}v_{s,k'}w_{t,k'}}
 
 if __name__ == '__main__':
-    main()
+    cl()
