@@ -68,11 +68,11 @@ $$c_{tk}=c_{tk}\displaystyle\frac{\sum_{rs}x_{rst}c_{tk}a_{rk}}{\sum_{rs}{\hat{x
 ## 4階テンソル分解
 ### ユークリッド距離ベース
 
-$$E=\sum_{ijkl}{(x_{ijkl}-\hat{x}_{ijkl})^2}$$
+$$E=\sum_{ijkl}{(x_{ijkl} - \hat{x}_{ijkl})^2}$$
 
-$$\hat{x}_{ijkl} = \sum_{h}{a_{ih}b_{jh}c_{kh}d_{lh}}$$
+$$\hat{x}_{ijkl} = \sum_{h}{a_{ih} b_{jh} c_{kh} d_{lh}}$$
 
-$$a_{ih} = a_{ih} \frac{\sum_{jkl}{x_{ijkl}b_{jh}c_{kh}d_{lh}}}{\sum_{jkl}{\hat{x}_{ijkl}b_{jh}c_{kh}d_{lh}}}$$
+$$a_{ih} = a_{ih} \frac{\sum_{jkl}{x_{ijkl} b_{jh} c_{kh} d_{lh}}}{\sum_{jkl}{\hat{x}_{ijkl} b_{jh} c_{kh} d_{lh}}}$$
 
 $$b_{jh} = b_{jh} \frac{\sum_{ikl}{x_{ijkl}a_{ih}c_{kh}d_{lh}}}{\sum_{ikl}{\hat{x}_{ijkl}a_{ih}c_{kh}d_{lh}}}$$
 
