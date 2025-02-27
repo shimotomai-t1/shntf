@@ -58,11 +58,18 @@ $$\hat{x}_{rst} = \sum_{l}{a_{rl} b_{sl} c_{tl}}$$
 
 分解されたベクトルは下の更新式で繰り返し計算される。
 
-$$a_{rk} = a_{rk}\displaystyle\frac{\sum_{st}{x_{rst}b_{sk}c_{tk}}}{\sum_{st}{\hat{x}_{rst}b_{sk}c_{tk}}}$$
+```math
+a_{rk} = a_{rk}\displaystyle\frac{\sum_{st}{x_{rst}b_{sk}c_{tk}}}{\sum_{st}{\hat{x}_{rst}b_{sk}c_{tk}}}
+```
 
-$$b_{sk}=b_{sk}\displaystyle\frac{\sum_{rt}x_{rst}a_{rk}c_{tk}}{\sum_{rt}{\hat{x}_{rst}}a_{rk}c_{tk}}$$
 
-$$c_{tk}=c_{tk}\displaystyle\frac{\sum_{rs}x_{rst}c_{tk}a_{rk}}{\sum_{rs}{\hat{x}_{rst}a_{rk}b_{sk}}}$$
+```math
+b_{sk}=b_{sk}\displaystyle\frac{\sum_{rt}x_{rst}a_{rk}c_{tk}}{\sum_{rt}{\hat{x}_{rst}}a_{rk}c_{tk}}
+```
+
+```math
+c_{tk}=c_{tk}\displaystyle\frac{\sum_{rs}x_{rst}c_{tk}a_{rk}}{\sum_{rs}{\hat{x}_{rst}a_{rk}b_{sk}}}
+```
 
 
 ## 4階テンソル分解
@@ -71,18 +78,24 @@ $$c_{tk}=c_{tk}\displaystyle\frac{\sum_{rs}x_{rst}c_{tk}a_{rk}}{\sum_{rs}{\hat{x
 $$E=\sum_{ijkl}{(x_{ijkl} - \hat{x}_{ijkl})^2}$$
 
 
-$$\hat{x}_{ijkl} = \sum_{h}{a_{ih} b_{jh} c_{kh} d_{lh}}$$
-
-$$\hat{x}_{ijkl} = \sum_{h} {a}$$
+```math
+\hat{x}_{ijkl} = \sum_{h}{a_{ih} b_{jh} c_{kh} d_{lh}}
+```
 
 ```math
 a_{ih} = a_{ih} \frac{\sum_{jkl}{x_{ijkl} b_{jh} c_{kh} d_{lh}}}{\sum_{jkl}{\hat{x}_{ijkl} b_{jh} c_{kh} d_{lh}}}
 ```
 
-$$b_{jh} = b_{jh} \frac{\sum_{ikl}{x_{ijkl}a_{ih}c_{kh}d_{lh}}}{\sum_{ikl}{\hat{x}_{ijkl}a_{ih}c_{kh}d_{lh}}}$$
+```math
+b_{jh} = b_{jh} \frac{\sum_{ikl}{x_{ijkl}a_{ih}c_{kh}d_{lh}}}{\sum_{ikl}{\hat{x}_{ijkl}a_{ih}c_{kh}d_{lh}}}
+```
 
-$$c_{kh} = c_{kh} \frac{\sum_{ijl}{x_{ijkl}a_{ih}b_{jh}d_{lh}}}{\sum_{ijl}{\hat{x}_{ijkl}a_{ih}b_{jh}d_{lh}}}$$
+```math
+c_{kh} = c_{kh} \frac{\sum_{ijl}{x_{ijkl}a_{ih}b_{jh}d_{lh}}}{\sum_{ijl}{\hat{x}_{ijkl}a_{ih}b_{jh}d_{lh}}}
+```
 
-$$d_{lh} = d_{lh} \frac{\sum_{ijk}{x_{ijkl}a_{ih}b_{jh}c_{kh}}}{\sum_{ijk}{\hat{x}_{ijkl}a_{ih}b_{jh}c_{kh}}}$$
+```math
+d_{lh} = d_{lh} \frac{\sum_{ijk}{x_{ijkl}a_{ih}b_{jh}c_{kh}}}{\sum_{ijk}{\hat{x}_{ijkl}a_{ih}b_{jh}c_{kh}}}
+```
 
 
