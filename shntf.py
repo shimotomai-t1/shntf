@@ -10,10 +10,13 @@ def cl():
     pass
 
 @cl.command()
-def eval2():
-    n = 3
-    ai = 3
-    bi = 41
+@click.option('--rank', '-r', type=int, default=3, help='分解数を指定します。')
+@click.option('--alength', '-a', type=int, default=3, help='行列Aの行数を指定します。')
+@click.option('--blength', '-b', type=int, default=5, help='行列Bの行数を指定します。')
+def eval2(rank:int, alength:int, blength:int):
+    n = rank
+    ai = alength
+    bi = blength
     ao = numpy.random.rand(ai, n)
     bo = numpy.random.rand(bi, n)
     print(ao)
@@ -25,6 +28,7 @@ def eval2():
         last = info.index[-1]
         df.loc[i, ['rank','error', 'LL', 'AIC']] = [i, info.loc[last,'error'], info.loc[last,'likelihood'], info.loc[last,'aic']]
     #df.index = df['rank']
+    df.to_csv('ntf2_rank_error.csv', index=False)
     print('result')
     print(ax)
     print(bx)
@@ -35,6 +39,8 @@ def eval2():
     #plt.plot(ax)
     #plt.figure()
     #plt.plot(bx)
+    plt.savefig('ntf2_rank_vs_error.png')
+    plt.savefig('ntf2_rank_vs_error.svg')
     plt.show()
     return
 
