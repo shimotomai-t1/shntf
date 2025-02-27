@@ -16,13 +16,13 @@ xはデータ、a,bは分解ベクトルで、hがランク数の添え字。
 
 更新式は
 
-$$a_{ih} = a_{ih}\frac{\sum_{j}{x_{ij}b_{jh}}}{\sum_{j}{\hat{x}_{ij}b_{jh}}}$$
+$$a_{ih} = a_{ih} \frac{\sum_{j}{x_{ij} b_{jh}}}{\sum_{j}{\hat{x}_{ij} b_{jh}}}$$
 
-$$b_{jh}=b_{jh}\frac{\sum_{i}{x_{ij}a_{ih}}}{\sum_{i}{\hat{x}_{ij}a_{ih}}}$$
+$$b_{jh}=b_{jh} \frac{\sum_{i}{x_{ij} a_{ih}}}{\sum_{i}{\hat{x}_{ij} a_{ih}}}$$
 
 #### 途中式
 
-Jensenの不等式を用いて補助関数$\tilde{E}$を定義。
+Jensenの不等式を用いて補助関数 $\tilde{E}$ を定義。
 
 $$E\le \tilde{E} = \sum_{ij}{\left(x_{ij}^2 - 2x_{ij}\sum_h{a_{ih}b_{jh}}+\sum_h{\frac{a_{ih}^2b_{jh}^2c_{kh}^2}{r_{ijh}}}\right)}$$
 
@@ -30,7 +30,7 @@ $$\sum_hr_{ijh} = 1$$
 
 未定乗数法を使って、
 
-$$F=\tilde{E}+\sum_{ij}{\lambda_{ij}(\sum_h{r_{ijh}}-1)}$$
+$$F=\tilde{E} + \sum_{ij}{\lambda_{ij}(\sum_h{r_{ijh}}-1)}$$
 
 Fをrで偏微分して、更に和が１という条件を使って、
 
@@ -53,11 +53,12 @@ $$E=\sum_{ijk}{(x_{ijk}-\hat{x}_{ijk})^2}$$
 
 ただし
 
-$$\hat{x}_{rst} = \sum_l{a_{rl}b_{sl}c_{tl}}$$
+$$\hat{x}_{rst} = \sum_{l}{a_{rl} b_{sl} c_{tl}}$$
+
 
 分解されたベクトルは下の更新式で繰り返し計算される。
 
-$$a_{rk} = a_{rk}\displaystyle\frac{\sum_{st}x_{rst}b_{sk}c_{tk}}{\sum_{st}{\hat{x}_{rst}b_{sk}c_{tk}}}$$
+$$a_{rk} = a_{rk}\displaystyle\frac{\sum_{st}{x_{rst}b_{sk}c_{tk}}}{\sum_{st}{\hat{x}_{rst}b_{sk}c_{tk}}}$$
 
 $$b_{sk}=b_{sk}\displaystyle\frac{\sum_{rt}x_{rst}a_{rk}c_{tk}}{\sum_{rt}{\hat{x}_{rst}}a_{rk}c_{tk}}$$
 
