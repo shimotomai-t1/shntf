@@ -75,7 +75,9 @@ $$\hat{x}_{ijkl} = \sum_{h}{a_{ih} b_{jh} c_{kh} d_{lh}}$$
 
 $$\hat{x}_{ijkl} = \sum_{h} {a}$$
 
-$$a_{ih} = a_{ih} \frac{\sum_{jkl}{x_{ijkl} b_{jh} c_{kh} d_{lh}}}{\sum_{jkl}{\hat{x}_{ijkl} b_{jh} c_{kh} d_{lh}}}$$
+```math
+a_{ih} = a_{ih} \frac{\sum_{jkl}{x_{ijkl} b_{jh} c_{kh} d_{lh}}}{\sum_{jkl}{\hat{x}_{ijkl} b_{jh} c_{kh} d_{lh}}}
+```
 
 $$b_{jh} = b_{jh} \frac{\sum_{ikl}{x_{ijkl}a_{ih}c_{kh}d_{lh}}}{\sum_{ikl}{\hat{x}_{ijkl}a_{ih}c_{kh}d_{lh}}}$$
 
