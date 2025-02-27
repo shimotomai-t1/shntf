@@ -277,16 +277,6 @@ def ntf3old(m:numpy.ndarray, n:int, iter:int=4, error_break:float=1e-4) -> tuple
         r3 = r3*(upper/lower)
         print('ntf3:r3\n',r3)
     r123 = numpy.einsum('il,jl,kl->ijk', r1, r2, r3)
-    plt.figure()
-    plt.plot(error1)
-    plt.plot(error2)
-    plt.grid()
-    plt.yscale('log')
-    plt.savefig('ntf3_error.png')
-    plt.savefig('ntf3_error.svg')
-    plt.ylim(1e-1, 1e3)
-    plt.savefig('ntf3_error1e3.png')
-    plt.savefig('ntf3_error1e3.svg')
     info = {'error1':error1, 'error2':error2, 'r123':r123}
     return r1,r2,r3, info
 
