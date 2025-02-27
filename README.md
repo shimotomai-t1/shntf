@@ -51,7 +51,11 @@ $$a_{ih} = \frac{\sum_j{x_{ij}b_{jh}}}{\sum_j{\frac{b^2_{jh}}{r_{ijh}}}}$$
 
 $$E=\sum_{ijk}{(x_{ijk}-\hat{x}_{ijk})^2}$$
 
+ただし
+
 $$\hat{x}_{rst} = \sum_l{a_{rl}b_{sl}c_{tl}}$$
+
+分解されたベクトルは下の更新式で繰り返し計算される。
 
 $$a_{rk} = a_{rk}\displaystyle\frac{\sum_{st}x_{rst}b_{sk}c_{tk}}{\sum_{st}{\hat{x}_{rst}b_{sk}c_{tk}}}$$
 
