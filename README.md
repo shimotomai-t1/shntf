@@ -70,7 +70,10 @@ $$c_{tk}=c_{tk}\displaystyle\frac{\sum_{rs}x_{rst}c_{tk}a_{rk}}{\sum_{rs}{\hat{x
 
 $$E=\sum_{ijkl}{(x_{ijkl} - \hat{x}_{ijkl})^2}$$
 
+
 $$\hat{x}_{ijkl} = \sum_{h}{a_{ih} b_{jh} c_{kh} d_{lh}}$$
+
+$$\hat{x}_{ijkl}$$
 
 $$a_{ih} = a_{ih} \frac{\sum_{jkl}{x_{ijkl} b_{jh} c_{kh} d_{lh}}}{\sum_{jkl}{\hat{x}_{ijkl} b_{jh} c_{kh} d_{lh}}}$$
 
