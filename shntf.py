@@ -120,18 +120,20 @@ def loglikelihoodGamma(m, r1, r2, r3):
 def aic(m, r1, r2, r3):
     return -2*loglikelihood(m, r1, r2, r3)+2*(r1.size+r2.size+r3.size)
 
-def ntf2(x:numpy.ndarray, n:int, iter:int=4) -> tuple:
+def ntf2(x:numpy.ndarray, n:int, iter:int=2048, error_break:float=1e-4) -> tuple:
     """
     x: 目的行列
     n: 分解数,rank
     iter: 繰り返し回数
     """
+    med = numpy.median(x)
+    x = x/med
     a = numpy.random.rand(x.shape[0], n)
     b = numpy.random.rand(x.shape[1], n)
     xhat = numpy.einsum('ih,jh->ij', a, b)
     er = ((x - xhat)*(x - xhat)).sum()
     dfer = pandas.DataFrame(index=numpy.arange(iter+1), columns=['error'])
-    parnum = x.shape[0]*n+ x.shape[1]*n
+    parnum = numpy.sum(x.shape)*n
     dfer.loc[0,'error'] = er
     for i in range(1, iter+1):
         xhat = numpy.einsum('ih,jh->ij', a, b)
