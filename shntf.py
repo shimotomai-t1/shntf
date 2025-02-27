@@ -150,11 +150,102 @@ def ntf2(x:numpy.ndarray, n:int, iter:int=2048, error_break:float=1e-4) -> tuple
         ll = - er.sum()/(2*s) - numpy.log(2*numpy.pi*s)
         aic = -2*ll + 2*parnum*0.003
         dfer.loc[i, ['error', 'variance', 'likelihood', 'aic']] = [er.sum(), s, ll, aic]
+        if s < error_break:
+            break
     print(dfer)
+    b = b*med
     return a, b, dfer
 
 
-def ntf3(m, n, iter=4):
+def ntf3(x:numpy.ndarray, n:int, iter:int=2048, error_break:float=1e-4) -> tuple:
+    """３階テンソル分解
+    x: 目的行列
+    n: 分解数,rank
+    iter: 繰り返し回数
+    error_break: 誤差がこの値以下になったら終了
+    """
+    med = numpy.median(x)
+    x = x/med
+    a = numpy.random.rand(x.shape[0], n)
+    b = numpy.random.rand(x.shape[1], n)
+    c = numpy.random.rand(x.shape[2], n)
+    xhat = numpy.einsum('ih,jh,kh->ijk', a, b,c)
+    er = ((x - xhat)*(x - xhat)).sum()
+    dfer = pandas.DataFrame(index=numpy.arange(iter+1), columns=['error'])
+    parnum = numpy.sum(x.shape)*n
+    dfer.loc[0,'error'] = er
+    for i in range(1, iter+1):
+        xhat  = numpy.einsum('ih,jh,kh->ijk', a, b,c)
+        lower = numpy.einsum('ijk,jh,kh->ih', xhat, b, c)
+        upper = numpy.einsum('ijk,jh,kh->ih', x,    b, c)
+        a = a * (upper/lower)
+        xhat  = numpy.einsum('ih,jh,kh->ijk', a, b, c)
+        lower = numpy.einsum('ijk,ih,kh->jh', xhat, a, c)
+        upper = numpy.einsum('ijk,ih,kh->jh', x,    a, c)
+        b = b * (upper/lower)
+        xhat  = numpy.einsum('ih,jh,kh->ijk', a, b, c)
+        lower = numpy.einsum('ijk,ih,jh->kh', xhat, a, b)
+        upper = numpy.einsum('ijk,ih,jh->kh', x,    a, b)
+        c = c * (upper/lower)
+        xhat  = numpy.einsum('ih,jh,kh->ijk', a, b, c)
+        er = ((x - xhat)*(x - xhat))
+        s = er.mean()
+        ll = - er.sum()/(2*s) - numpy.log(2*numpy.pi*s)
+        aic = -2*ll + 2*parnum*0.003
+        dfer.loc[i, ['error', 'variance', 'likelihood', 'aic']] = [er.sum(), s, ll, aic]
+        if s < error_break:
+            break
+    print(dfer)
+    c = c*med
+    return a, b, c, dfer
+
+def nntf(x:numpy.ndarray, n:int, iter:int=2048, error_break:float=1e-4) -> tuple:
+    """n階テンソル分解 26次元まで
+    x: 目的行列
+    n: 分解数,rank
+    iter: 繰り返し回数
+    error_break: 誤差がこの値以下になったら終了
+    """
+    med = numpy.median(x)
+    x = x/med
+    dim = len(x.shape)
+    index_list = [chr(i) for i in range(ord('a'),ord('a')+dim)]
+    vec = [numpy.random.rand(x.shape[i], n) for i in range(dim)]
+    ind = ','.join([f'{c}z' for c in index_list])
+    indr= ind.replace('z','').replace(',','')
+    statement = f'{ind}->{indr}'
+    print(statement)
+    xhat = numpy.einsum(statement, *vec)
+    er = ((x - xhat)*(x - xhat)).mean()
+    dfer = pandas.DataFrame(index=numpy.arange(iter+1), columns=['error'])
+    parnum = numpy.sum(x.shape)*n
+    dfer.loc[0,'error'] = er
+    for i in range(1, iter+1):
+        for j in range(dim):
+            c = index_list[j]
+            xhat = numpy.einsum(statement, *vec)
+            exlist = [f'{ci}z' for ci in index_list if ci != c]
+            ulstatement = (''.join(index_list))+','+ (','.join(exlist)) + '->' + c + 'z'
+            exvec = [vec[k] for k in range(dim) if k != j]
+            lower = numpy.einsum(ulstatement, xhat, *exvec)
+            upper = numpy.einsum(ulstatement, x, *exvec)
+            vec[j] = vec[j] * (upper/lower)
+        xhat = numpy.einsum(statement, *vec)
+        er = ((x - xhat)*(x - xhat))
+        s = er.mean()
+        ll = - er.sum()/(2*s) - numpy.log(2*numpy.pi*s)
+        aic = -2*ll + 2*parnum*0.003
+        dfer.loc[i, ['error', 'variance', 'likelihood', 'aic']] = [er.sum(), s, ll, aic]
+    return vec, dfer
+
+def ntf3old(m:numpy.ndarray, n:int, iter:int=4, error_break:float=1e-4) -> tuple:
+    """
+    m: 目的行列
+    n: 分解数,rank
+    iter: 繰り返し回数
+    """
+    med = numpy.median(m)
+    m = m/med
     r1 = numpy.zeros((m.shape[0],n))
     r2 = numpy.zeros((m.shape[1],n))
     r3 = numpy.zeros((m.shape[2],n))
