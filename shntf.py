@@ -236,6 +236,10 @@ def nntf(x:numpy.ndarray, n:int, iter:int=2048, error_break:float=1e-4) -> tuple
         ll = - er.sum()/(2*s) - numpy.log(2*numpy.pi*s)
         aic = -2*ll + 2*parnum*0.003
         dfer.loc[i, ['error', 'variance', 'likelihood', 'aic']] = [er.sum(), s, ll, aic]
+        dif = dfer.loc[i-1,'error'] - dfer.loc[i,'error']
+        if er.sum() < error_break or numpy.abs(dif) < 1e-5:
+            break
+    vec[-1] *= med
     return vec, dfer
 
 def ntf3old(m:numpy.ndarray, n:int, iter:int=4, error_break:float=1e-4) -> tuple:
