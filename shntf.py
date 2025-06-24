@@ -200,7 +200,8 @@ def ntf3(x:numpy.ndarray, n:int, iter:int=2048, error_break:float=1e-4) -> tuple
     return a, b, c, dfer
 
 def nntf(x:numpy.ndarray, n:int, iter:int=2048, error_break:float=1e-4) -> tuple:
-    """n階テンソル分解 26次元まで
+    """n-dimensional non-negative tensor factorization
+    n階テンソル分解 26次元まで
     x: 目的行列
     n: 分解数,rank
     iter: 繰り返し回数
